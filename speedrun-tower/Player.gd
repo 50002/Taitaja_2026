@@ -31,9 +31,12 @@ func _physics_process(delta: float) -> void:
 			sprite.scale=(Vector2(1, 1))
 		
 	if direction and is_on_floor():
-		velocity.x = direction * SPEED
+		if velocity.x < SPEED:
+			velocity.x = move_toward(velocity.x, direction * SPEED, 150)
+		else:
+			velocity.x = move_toward(velocity.x, direction * SPEED, 60)
 	elif is_on_floor():
-		velocity.x = move_toward(velocity.x, 0, abs(((velocity.x+SPEED*7.5)/SPEED)))
+		velocity.x = move_toward(velocity.x, 0, abs(((velocity.x+SPEED*12)/SPEED)))
 	if velocity.x == 0:
 		an.play("default")
 	move_and_slide()
