@@ -1,9 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://bg5vkh2xrmukf"]
+[gd_scene load_steps=14 format=3 uid="uid://bg5vkh2xrmukf"]
 
 [ext_resource type="Script" uid="uid://dy43c8dg33rxf" path="res://Player.gd" id="1_v0iea"]
 [ext_resource type="PackedScene" uid="uid://jbddkyfpdkhg" path="res://Scenes/gun.tscn" id="2_cvnsp"]
 [ext_resource type="Texture2D" uid="uid://s5naorgudqp6" path="res://Assets/pixil-frame-0(18).png" id="2_vgqql"]
 [ext_resource type="Texture2D" uid="uid://c5vwnfg678sl6" path="res://Assets/pixil-frame-0(19).png" id="3_fkybt"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vgqql"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_x3wgy"]
 atlas = ExtResource("2_vgqql")
@@ -67,6 +69,16 @@ height = 26.0
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_v0iea")
 
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 9
+collision_mask = 9
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_vgqql")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.05
+
 [node name="sprite" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="sprite"]
@@ -84,9 +96,19 @@ shape = SubResource("CapsuleShape2D_cvnsp")
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(1.5, 1.5)
 
+[node name="Label" type="Label" parent="."]
+offset_left = -51.0
+offset_top = -210.0
+offset_right = 55.0
+offset_bottom = -187.0
+text = "Time 00:00:00"
+
 [node name="AmmoC" type="Label" parent="."]
 offset_left = -378.0
 offset_top = -210.0
 offset_right = -290.0
 offset_bottom = -183.0
 text = "Ammo: 0"
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

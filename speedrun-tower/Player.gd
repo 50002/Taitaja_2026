@@ -1,12 +1,16 @@
 extends CharacterBody2D
 
+@onready var c: Timer = $Timer
 
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 @onready var sprite: Node2D = $sprite
 var direction
 @onready var an: AnimatedSprite2D = $sprite/AnimatedSprite2D
-
+@onready var b: Label = $Label
+var ms := 0
+var s := 0
+var m := 0
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -33,3 +37,21 @@ func _physics_process(delta: float) -> void:
 	if velocity.x == 0:
 		an.play("default")
 	move_and_slide()
+
+
+func _on_timer_timeout() -> void:
+	ms += 5
+	ajastin()
+	
+func ajastin():
+	if ms >= 100:
+		s+= 1
+		ms-=100
+	if s >= 60:
+		m+= 1
+		s-= 60
+	b.text = "Time: "+ str(m)+":"+str(s)+":"+str(ms)
+
+
+func _on_area_2d_area_entered(area: Area2D) -> void:
+	c.start()
