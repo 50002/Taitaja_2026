@@ -5,6 +5,7 @@ const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 @onready var sprite: Node2D = $sprite
 var direction
+@onready var an: AnimatedSprite2D = $sprite/AnimatedSprite2D
 
 
 func _physics_process(delta: float) -> void:
@@ -19,6 +20,7 @@ func _physics_process(delta: float) -> void:
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	direction = Input.get_axis("ui_left", "ui_right")
 	if direction:
+		an.play("new_animation")
 		if direction < 0:
 			sprite.scale=(Vector2(-1, 1))
 		elif direction > 0:
@@ -28,5 +30,6 @@ func _physics_process(delta: float) -> void:
 		velocity.x = direction * SPEED
 	elif is_on_floor():
 		velocity.x = move_toward(velocity.x, 0, abs(((velocity.x+SPEED*7.5)/SPEED)))
-
+	if velocity.x == 0:
+		an.play("default")
 	move_and_slide()
