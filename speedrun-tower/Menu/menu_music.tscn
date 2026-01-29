@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://b856n5eu33sq6"]
+
+[ext_resource type="AudioStream" uid="uid://ctwhyqrwvphyh" path="res://Assets/Fred Mug - Blank Title Screen.mp3" id="1_wjgly"]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D"]
+stream = ExtResource("1_wjgly")
+volume_db = 5.0
