@@ -13,7 +13,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.16078432, 0.16078432, 0.16078432, 0.6039216)
+color = Color(0.37254903, 0.05882353, 0.2509804, 0.13333334)
 
 [node name="Container" type="Container" parent="ColorRect"]
 layout_mode = 1
@@ -35,11 +35,25 @@ mouse_behavior_recursive = 1
 
 [node name="Button" type="Button" parent="ColorRect/Container/VBoxContainer"]
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9098039, 0.8392157, 1)
+theme_override_colors/font_focus_color = Color(0.9843137, 0.54509807, 0.14117648, 1)
+theme_override_colors/font_pressed_color = Color(0.9843137, 0.54509807, 0.14117648, 1)
 theme_override_font_sizes/font_size = 32
 text = "Resume"
 
+[node name="Button3" type="Button" parent="ColorRect/Container/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9098039, 0.8392157, 1)
+theme_override_colors/font_focus_color = Color(0.9843137, 0.54509807, 0.14117648, 1)
+theme_override_colors/font_pressed_color = Color(0.9843137, 0.54509807, 0.14117648, 1)
+theme_override_font_sizes/font_size = 32
+text = "Restart"
+
 [node name="Button2" type="Button" parent="ColorRect/Container/VBoxContainer"]
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9098039, 0.8392157, 1)
+theme_override_colors/font_focus_color = Color(0.9843137, 0.54509807, 0.14117648, 1)
+theme_override_colors/font_pressed_color = Color(0.9843137, 0.54509807, 0.14117648, 1)
 theme_override_font_sizes/font_size = 32
 text = "Quit"
 
