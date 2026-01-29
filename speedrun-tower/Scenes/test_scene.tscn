@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://dhah7fr82pfns"]
+[gd_scene load_steps=6 format=3 uid="uid://dhah7fr82pfns"]
 
 [ext_resource type="PackedScene" uid="uid://bg5vkh2xrmukf" path="res://Scenes/player.tscn" id="1_3dogw"]
 [ext_resource type="Script" uid="uid://cdx5olixeij6m" path="res://Scenes/test_scene.gd" id="1_r5l72"]
 [ext_resource type="PackedScene" uid="uid://cvbgn1gqfetay" path="res://Scenes/timer_startter.tscn" id="3_50ct6"]
+[ext_resource type="PackedScene" uid="uid://cqwt2v5hq5k7p" path="res://Scenes/lava.tscn" id="4_hb2xm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r5l72"]
 size = Vector2(1178, 457)
@@ -36,6 +37,9 @@ autostart = true
 ignore_time_scale = true
 
 [node name="Player" parent="." instance=ExtResource("1_3dogw")]
-position = Vector2(48, -45)
+position = Vector2(102, -37)
+
+[node name="Lava" parent="." instance=ExtResource("4_hb2xm")]
+position = Vector2(360, 197)
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
