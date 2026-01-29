@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://eke2f633md1a"
+path="res://.godot/imported/Fred Mug - Vie.mp3-3d2a0ee32e718f12e89d2e6b210992f9.mp3str"
+
+[deps]
+
+source_file="res://Assets/Fred Mug - Vie.mp3"
+dest_files=["res://.godot/imported/Fred Mug - Vie.mp3-3d2a0ee32e718f12e89d2e6b210992f9.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
