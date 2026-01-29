@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=4 uid="uid://c5tlxaxcxrbkx"]
+[gd_scene load_steps=7 format=4 uid="uid://c5tlxaxcxrbkx"]
 
 [ext_resource type="PackedScene" uid="uid://ygnctyjg4bpv" path="res://Scenes/tutorial.tscn" id="1_26yhd"]
+[ext_resource type="Script" uid="uid://c12kdr2xnib8v" path="res://Scenes/map.gd" id="1_myvm1"]
 [ext_resource type="Texture2D" uid="uid://cor60ei3kp6p0" path="res://Assets/Tilesetv3.png" id="2_p3ir5"]
 [ext_resource type="PackedScene" uid="uid://bg5vkh2xrmukf" path="res://Scenes/player.tscn" id="3_p3ir5"]
 
@@ -752,6 +753,7 @@ physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_myvm1")
 
 [node name="Map" type="Node2D"]
+script = ExtResource("1_myvm1")
 
 [node name="Tutorial" parent="." instance=ExtResource("1_26yhd")]
 
