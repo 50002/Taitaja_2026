@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://ue7obn4p71va"]
+[gd_scene load_steps=3 format=3 uid="uid://ue7obn4p71va"]
 
 [ext_resource type="Script" uid="uid://cpg0j57b8sl5i" path="res://Menu/loading.gd" id="1_wi1po"]
+[ext_resource type="Texture2D" uid="uid://dct6p1xng46m5" path="res://Assets/Untitled.png" id="2_wi1po"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -30,6 +31,7 @@ grow_vertical = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="Container"]
 position = Vector2(581, 324)
+texture = ExtResource("2_wi1po")
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 6.0

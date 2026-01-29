@@ -10,6 +10,7 @@ var cal = 0
 
 var loop = 100000
 func _ready() -> void:
+	MenuMusic.play()
 	
 	cal = Highscore.ml *100
 	for i in loop:
