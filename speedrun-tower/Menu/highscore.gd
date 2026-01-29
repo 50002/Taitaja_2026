@@ -11,4 +11,4 @@ func save():
 
 func _ready() -> void:
 	config.load(path)
-	config.get_value("SCORE", "score", 0)
+	value = config.get_value("SCORE", "score", 0)

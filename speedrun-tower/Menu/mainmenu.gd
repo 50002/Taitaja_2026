@@ -3,15 +3,20 @@ extends Control
 @onready var Move = $Move
 
 @onready var label = $ColorRect/Container3/Label
-var highscore = 0.0
+var minutes = 0
+var seconds = 0.0
 
 func _ready() -> void:
-	highscore = Highscore.value
+	minutes = Highscore.value / 60
+	seconds = Highscore.value - (minutes * 60)
 	MenuMusic.play()
-	if highscore == 0:
+	
+	
+	
+	if Highscore.value == 0:
 		label.text = "No runs yet"
 	else:
-		label.text = "Best run: "+ str(highscore)
+		label.text = "Best run: " + str(minutes) + ":" + str(seconds)
 	$ColorRect/Container/VBoxContainer/Button.grab_focus()
 
 
