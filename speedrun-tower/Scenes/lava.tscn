@@ -1,0 +1,77 @@
+[gd_scene load_steps=10 format=3 uid="uid://cqwt2v5hq5k7p"]
+
+[ext_resource type="Texture2D" uid="uid://dhaf2lkmxgyb1" path="res://Assets/pixilart-sprite.png" id="1_mtm6w"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_mtm6w"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_nbwm5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_erykr"]
+atlas = ExtResource("1_mtm6w")
+region = Rect2(0, 0, 160, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t7utp"]
+atlas = ExtResource("1_mtm6w")
+region = Rect2(160, 0, 160, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tgwwl"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_erykr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t7utp")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mtm6w"]
+atlas = ExtResource("1_mtm6w")
+region = Rect2(160, 0, 160, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nbwm5"]
+atlas = ExtResource("1_mtm6w")
+region = Rect2(0, 0, 160, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_erykr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mtm6w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nbwm5")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Lava" type="CharacterBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("WorldBoundaryShape2D_mtm6w")
+disabled = true
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("WorldBoundaryShape2D_nbwm5")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(6, 3.6)
+sprite_frames = SubResource("SpriteFrames_tgwwl")
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="."]
+position = Vector2(960, 0)
+scale = Vector2(6, 3.6)
+sprite_frames = SubResource("SpriteFrames_erykr")
+
+[node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="."]
+position = Vector2(-960, 0)
+scale = Vector2(6, 3.6)
+sprite_frames = SubResource("SpriteFrames_erykr")
+flip_h = true
