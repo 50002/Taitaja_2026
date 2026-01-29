@@ -33,13 +33,16 @@ func _physics_process(delta: float) -> void:
 	if direction and is_on_floor():
 		if aud.playing == false:
 			aud.play()
-		
 		if velocity.x < SPEED:
 			velocity.x = move_toward(velocity.x, direction * SPEED, 150)
 		else:
 			velocity.x = move_toward(velocity.x, direction * SPEED, 60)
+	
+	elif direction and is_on_floor() == false:
+		velocity.x += direction*3
+	
 	elif is_on_floor():
-		velocity.x = move_toward(velocity.x, 0, abs(((velocity.x+SPEED*12)/SPEED)))
+		velocity.x = move_toward(velocity.x, 0, abs(((velocity.x+SPEED*20)/SPEED)))
 	if velocity.x == 0:
 		an.play("default")
 	move_and_slide()
