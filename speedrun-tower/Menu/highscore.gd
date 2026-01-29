@@ -2,13 +2,13 @@ extends Node
 
 var config = ConfigFile.new()
 var path = "user://higscore.cfg"
-var value = 0
+var ml = 0
 
 func save():
 	config.load(path)
-	config.set_value("SCORE", "score", value)
+	config.set_value("SCORE", "score", ml)
 	config.save(path)
 
 func _ready() -> void:
 	config.load(path)
-	value = config.get_value("SCORE", "score", 0)
+	ml = config.get_value("SCORE", "score", 0)

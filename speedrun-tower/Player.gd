@@ -44,6 +44,7 @@ func _physics_process(delta: float) -> void:
 
 func _on_timer_timeout() -> void:
 	ms += 5
+	Highscore.ml += 5
 	ajastin()
 	
 func ajastin():
