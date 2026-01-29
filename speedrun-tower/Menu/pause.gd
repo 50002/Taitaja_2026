@@ -30,3 +30,7 @@ func _on_timer_timeout() -> void:
 func _on_timer_2_timeout() -> void:
 	Engine.time_scale = 1
 	get_tree().change_scene_to_file("res://Menu/Mainmenu.tscn")
+
+
+func _on_button_3_pressed() -> void:
+	get_tree().change_scene_to_file("res://Scenes/tutorial.tscn")
