@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="SpeedrunTower"
+run/main_scene="uid://h4ijickwt4mh"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 

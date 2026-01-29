@@ -1,5 +1,6 @@
 extends Node2D
 
+@onready var dio: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
 var Ammo := 2
 var player 
@@ -33,6 +34,7 @@ func _process(delta: float) -> void:
 		
 	
 	if Input.is_action_just_pressed("ui_accept") and Ammo > 0:
+		dio.play()
 		player.velocity += Vector2(-500*scale.x,0).rotated(rotation)
 		a.play("shoot")
 		Ammo -= 1

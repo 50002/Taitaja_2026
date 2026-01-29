@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://jbddkyfpdkhg"]
+[gd_scene load_steps=11 format=3 uid="uid://jbddkyfpdkhg"]
 
 [ext_resource type="Script" uid="uid://bpp0kjo43ejqq" path="res://Gun.gd" id="1_oqrbh"]
 [ext_resource type="Texture2D" uid="uid://ctwkejeiyajg8" path="res://pixil-frame-0(16).png" id="2_t6ynv"]
+[ext_resource type="AudioStream" uid="uid://dt4vsm3vins0s" path="res://Assets/BeepBox-Song(1).wav" id="3_t6ynv"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_k4teu"]
 atlas = ExtResource("2_t6ynv")
@@ -67,3 +68,7 @@ position = Vector2(4, -6)
 sprite_frames = SubResource("SpriteFrames_ae81u")
 animation = &"idle"
 autoplay = "idle"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_t6ynv")
+volume_db = 2.0

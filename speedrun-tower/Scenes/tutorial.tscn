@@ -762,4 +762,4 @@ tile_map_data = PackedByteArray("AAAAAAAAAAABAAIAAAABAAAAAAABAAIAAAACAAAAAAABAAI
 tile_set = SubResource("TileSet_p8jf4")
 
 [node name="Player" parent="." instance=ExtResource("2_omtrn")]
-position = Vector2(230, -769)
+position = Vector2(-2, -60)
