@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0nnfuhfxn25"]
+
+[ext_resource type="AudioStream" uid="uid://eke2f633md1a" path="res://Assets/Fred Mug - Vie.mp3" id="1_of12u"]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D"]
+stream = ExtResource("1_of12u")
