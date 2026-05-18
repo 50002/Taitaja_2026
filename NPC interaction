@@ -1,0 +1,52 @@
+extends Control
+
+
+@onready var Background: NinePatchRect = $ColorRect
+@onready var container: VBoxContainer = $ColorRect/VBoxContainer
+@onready var text_box: Control = $"../Text_box"
+
+var sizing : float = 0.0
+var options : Array = []
+var combat_style = preload("res://2d/Turn-Based-Combat/combat(rpg_style).tscn")
+
+
+func open() -> void:
+        var LargestButton : Button = Button.new()
+        if options.has("Quit"):
+                options.erase("Quit")
+                options.append("Quit")
+        for thing in options:
+                var thang = Button.new()
+                thang.name = thing
+                thang.text = thing
+                thang.flat = true
+                thang.pressed.connect(on_Button_press.bind(thang))
+                if thing.length() > LargestButton.text.length():
+                        LargestButton = thang
+                container.add_child(thang)
+
+        for button in container.get_children():
+                sizing += 1.0
+
+        #resize container to match buttons
+        container.pivot_offset.y = 14*sizing
+        container.pivot_offset.x = LargestButton.size.x/2
+        Background.size.y = 28.0 * sizing
+        Background.size.x = LargestButton.size.x
+        container.get_child(0).grab_focus()
+
+
+
+func on_Button_press(button) -> void :
+        print(button)
+        match button.name:
+                "Quit":
+                        text_box.HideTextBox()
+                "Fight":
+                        GameManager.initialize_combat(combat_style.instantiate())
+
+func clear() -> void:
+        sizing = 0.0
+        options = []
+        for child in container.get_children():
+                child.queue_free()
