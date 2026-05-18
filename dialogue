@@ -1,0 +1,34 @@
+extends Node2D
+
+@export var Lines : Array[String]
+@export var MenuChoices : Dictionary[String, bool] = {
+        "Talk": false,
+        "Shop": false,
+        "Fight": false,
+        "Level Up": false,
+        "Quit": false,
+        
+}
+
+
+
+var Name : String
+var Portrait : Sprite2D
+var npc
+
+
+signal Display_Dialogue(Array)
+
+# Called when the node enters the scene tree for the 
+
+
+func initialize(owner):
+        npc = owner
+
+
+func on_interact():
+        var choices = []
+        for key in MenuChoices:
+                if MenuChoices[key] == true:
+                        choices.append(key)
+        get_tree().current_scene.DisplayTextBox(Lines, choices)
