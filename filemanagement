@@ -1,0 +1,285 @@
+class_name FileManagement
+extends Node
+
+
+
+#For the purposes of collecting player position
+var Player: CharacterBody2D
+
+#Keys for reusability
+var KEY_NAME: String = "Name"
+var KEY_PLAYER_STATS: String = "Player_Stats"
+var KEY_EQUIPMENT: String = "Equipment"
+var KEY_INVENTORY: String = "Inventory"
+var KEY_BLESSINGS: String = "Blessings"
+var KEY_LEARNED_SKILLS: String = "Skills"
+var KEY_ACTIVE_STATUS_EFFECTS: String = "Acrive_Status_effects"
+var KEY_MONEY: String = "Money"
+var KEY_PROGRESS: String = "Progress"
+var KEY_DIFFICULTY: String = "Difficulty"
+var KEY_POSITION_X: String = "Position_x"
+var KEY_POSITION_Y: String = "Position_y"
+var KEY_MAP: String = "Location"
+var KEY_DOORS: String = "Doors"
+var KEY_ITEMS: String = "Items"
+
+
+func Save_to_file(path: String):
+##How save date is supposed to look
+#Save {
+        #name: string,
+        #level: int,
+        #location: string,
+        #position: Vector2,
+        #time: int,
+        #player_stats: {
+                #Max_HP: int,
+                #HP: int,
+                #Max_MP: int,
+                #MP: INT,
+                #Current_EXP: INT,
+                #EXP_TO_LVL_UP: INT,
+                #ATK: INT,
+                #DEF: INT,
+                #MAG: INT,
+                #MDF: INT,
+                #SPD: INT,
+                #LCK: INT,
+                #ACC: INT,
+                #EVA: INT,
+                #MAG_EVA: INT,
+                #CRIT: INT,
+                #Counter: INT,
+                #HP_Regen: INT,
+                #MP_Regen: INT,
+                #Guard: INT,
+                #MP_Cost: INT
+                #},
+        #Active_Status_Effects: [],
+        #Inventory: {
+                #Item_ID: INT,
+                #Weapon_ID:INT,
+                #Armor_ID:INT,
+                #KEYitem_ID:INT
+                #},
+        #Skills: [],
+        #Equipment: {
+                #Weapon: string_id,
+                #Shield: string_id,
+                #Helmet: string_id,
+                #Armor: string_id,
+                #accessory_1: string_id,
+                #accessory_2: string_id,
+                #accessory_3: string_id,
+                #accessory_4: string_id
+                #},
+        #Blessing: {
+                #Blessing_A: INT,
+                #Blessing_B: INT,
+                #Blessing_C: INT
+                #},
+        #Money: INT,
+        #Secret_Value: INT,
+        #Game_Progress: INT,
+        #Unlocked_Doors: {
+                #Area_01: ARRAY
+                #},
+        #Collectables: ARRAY,
+        #Events: {
+                #Character_Events: {
+                        #Character_A:ARRAY
+                        #Character_B:ARRAY
+                        #},
+                #World_Events: {
+                        #Area_1:ARRAY
+                        #Area_2:ARRAY
+                        #},
+                #Bosses_Defeated: ARRAY
+                #},
+        #Difficulty_mod: Float,
+#
+#}
+
+        var Save_data: Dictionary = {
+                KEY_NAME: PlayerInfo.Player_Name,
+                KEY_PLAYER_STATS: PlayerInfo.Base_Stats,
+                KEY_EQUIPMENT: PlayerInfo.Equipment,
+                KEY_INVENTORY: PlayerInfo.Inventory,
+                KEY_BLESSINGS: PlayerInfo.Blessings,
+                KEY_ACTIVE_STATUS_EFFECTS: PlayerInfo.Active_Status_Effects,
+                KEY_LEARNED_SKILLS: PlayerInfo.Learned_Skills,
+                KEY_MONEY: PlayerInfo.Money,
+                KEY_PROGRESS: GameManager.Game_Progress,
+                KEY_DIFFICULTY: GameManager.Difficulty_mod,
+                KEY_POSITION_X: Player.global_position.x,
+                KEY_POSITION_Y: Player.global_position.y,
+                KEY_DOORS: Unlocked_Doors(),
+                KEY_MAP: GameManager.findMap(GameManager.Player_Spawn),
+                KEY_ITEMS: Collected_Items()
+
+        }
+        var err: Error = FileManagement.Store_json_file(Save_data, path, true)
+        if err != OK:
+                push_error("Fuckass shit: ", error_string(err))
+
+
+func Load_from_file(path: String) -> void: #loads the save data
+        var save_data: Dictionary = {}
+        var err: Error = Open_file(path, save_data)
+        if err != OK:
+                push_error("Can't load: ", error_string(err))
+                return
+        err = verify_data(save_data)
+        if err != OK:
+                push_error("invalid file structure")
+                return
+
+
+        PlayerInfo.Player_Name = save_data[KEY_NAME]
+        PlayerInfo.Base_Stats = save_data[KEY_PLAYER_STATS]
+        PlayerInfo.Equipment = save_data[KEY_EQUIPMENT]
+        PlayerInfo.Inventory = save_data[KEY_INVENTORY]
+        PlayerInfo.Blessings = save_data[KEY_BLESSINGS]
+        PlayerInfo.Active_Status_Effects = save_data[KEY_ACTIVE_STATUS_EFFECTS]
+        PlayerInfo.Learned_Skills = save_data[KEY_LEARNED_SKILLS]
+        PlayerInfo.Money = save_data[KEY_MONEY]
+        GameManager.Game_Progress = save_data[KEY_PROGRESS]
+        GameManager.Player_Spawn = save_data[KEY_MAP]
+        GameManager.LOAD_SPAWN = Vector2(save_data[KEY_POSITION_X], save_data[KEY_POSITION_Y])
+
+        for key in save_data[KEY_INVENTORY]:
+                PlayerInfo.Inventory[key] = int(save_data[KEY_INVENTORY][key])
+
+        for area in save_data[KEY_ITEMS]:
+                for id in save_data[KEY_ITEMS][area]:
+                        GameManager.Collectables[area][int(id)] = true
+
+        for area in save_data[KEY_DOORS]:
+                for door_id in save_data[KEY_DOORS][area]:
+                        GameManager.Locked_Doors[area][door_id] = false
+
+
+static func Store_json_file(data: Dictionary, path: String, create: bool) -> Error: #Saves the JSON file
+        var result: Array = open_file_for_write(path, create)
+        var err: Error = result[0] as Error
+        var file: FileAccess = result[1] as FileAccess
+
+        if err != OK:
+                return err
+
+        file.store_string(JSON.stringify(data))
+        file.close()
+        return OK
+
+
+static func Open_file(path: String, save: Dictionary) -> Error: #opens the save file
+        save.clear()
+
+        var result: Array = Read_file(path)
+        var err: Error = result[0] as Error
+        var file: FileAccess = result[1] as FileAccess
+
+        if err != OK:
+                return err
+
+        var json_String: String = file.get_as_text()
+        file.close()
+
+        var json: JSON = JSON.new()
+        err = json.parse(json_String)
+        if err != OK:
+                return err
+        var data: Variant = json.get_data()
+        if typeof(data) != TYPE_DICTIONARY:
+                return ERR_INVALID_DATA
+
+        save.merge(data as Dictionary, true)
+        return OK
+
+
+static func open_file_for_write(path: String, create: bool) -> Array: #Opens JSON file to saving purposes
+        var err: Error = verify_dir(path, create)
+        if err != OK:
+                return [err, null]
+        var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
+        if file == null:
+                return [FileAccess.get_open_error(), null]
+
+        return [OK, file]
+
+
+static func Read_file(path: String) -> Array: #opens file for reading
+        if not FileAccess.file_exists(path):
+                return [ERR_FILE_NOT_FOUND, null]
+
+        var file: FileAccess = FileAccess.open(path,FileAccess.READ)
+        if file == null:
+                return [FileAccess.get_open_error(), null]
+
+        return [OK, file]
+
+
+static func verify_dir(path: String, create: bool) -> Error: #Verifies that there IS a dir, if not makes one
+        var dir_path: String = path.get_base_dir()
+        if DirAccess.dir_exists_absolute(dir_path):
+                return OK
+        if not create:
+                return ERR_CANT_CREATE
+        return DirAccess.make_dir_recursive_absolute(dir_path)
+
+
+func verify_data(save: Dictionary) -> Error: #Makes sure that a save file has all nececcary data
+        if not save.has(KEY_NAME):
+                return ERR_DOES_NOT_EXIST
+        if not save.has(KEY_PLAYER_STATS):
+                return ERR_DOES_NOT_EXIST
+        if not save.has(KEY_EQUIPMENT):
+                return ERR_DOES_NOT_EXIST
+        if not save.has(KEY_INVENTORY):
+                return ERR_DOES_NOT_EXIST
+        if not save.has(KEY_BLESSINGS):
+                return ERR_DOES_NOT_EXIST
+        if not save.has(KEY_LEARNED_SKILLS):
+                return ERR_DOES_NOT_EXIST
+        if not save.has(KEY_ACTIVE_STATUS_EFFECTS):
+                return ERR_DOES_NOT_EXIST
+        if not save.has(KEY_MONEY):
+                return ERR_DOES_NOT_EXIST
+        if not save.has(KEY_PROGRESS):
+                return ERR_DOES_NOT_EXIST
+        if not save.has(KEY_DIFFICULTY):
+                return ERR_DOES_NOT_EXIST
+        if not save.has(KEY_POSITION_X):
+                return ERR_DOES_NOT_EXIST
+        if not save.has(KEY_POSITION_Y):
+                return ERR_DOES_NOT_EXIST
+        if not save.has(KEY_MAP):
+                return ERR_DOES_NOT_EXIST
+        if not save.has(KEY_DOORS):
+                return ERR_DOES_NOT_EXIST
+        if not save.has(KEY_ITEMS):
+                return ERR_DOES_NOT_EXIST
+        return OK
+
+func Unlocked_Doors() -> Dictionary:
+        var doors: Dictionary = {}
+        for area in GameManager.Locked_Doors:
+                for door in GameManager.Locked_Doors[area]:
+                        if GameManager.Locked_Doors[area][door] == false:
+                                if not doors.has(area):
+                                        doors[area] = []
+                                doors[area].append(door)
+        return doors
+
+func Collected_Items() -> Dictionary:
+        var items: Dictionary = {}
+        for area in GameManager.Collectables:
+                for id in GameManager.Collectables[area]:
+                        if GameManager.Collectables[area][id] == true:
+                                if not items.has(area):
+                                        items[area] = []
+                                items[area].append(id)
+        return items
+
+
+
