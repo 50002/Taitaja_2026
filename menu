@@ -1,0 +1,63 @@
+extends Control
+
+
+
+signal Change_tab(tab: String)
+
+@onready var items: Button = $Main/HBoxContainer/VBoxContainer/VBoxContainer/Items
+@onready var skills: Button = $Main/HBoxContainer/VBoxContainer/VBoxContainer/Skills
+@onready var equipment: Button = $Main/HBoxContainer/VBoxContainer/VBoxContainer/Equipment
+@onready var status: Button = $Main/HBoxContainer/VBoxContainer/VBoxContainer/Status
+@onready var covenant: Button = $Main/HBoxContainer/VBoxContainer/VBoxContainer/Covenant
+@onready var save: Button = $Main/HBoxContainer/VBoxContainer/VBoxContainer/Save
+@onready var game_end: Button = $"Main/HBoxContainer/VBoxContainer/VBoxContainer/Game end"
+@onready var sen: Label = $Main/HBoxContainer/VBoxContainer/Sen
+@onready var money: Label = $Main/HBoxContainer/VBoxContainer/Money
+
+
+var Inventory
+var SkillList
+var Equip
+var StatusScreen
+var Covenants
+var SaveMenu
+var GameEnd
+
+
+
+func _ready() -> void:
+        items.grab_focus()
+
+        Inventory = preload("res://2d/Assets/UI elements/inventory.tscn")
+   
+        SaveMenu = preload("res://2d/Assets/UI elements/save_datas.tscn")
+        GameEnd = preload("res://2d/Assets/UI elements/quit_confirmation.tscn")
+
+
+
+
+
+func opened():
+        self.visible = true
+        money.text = str(PlayerInfo.Money, " S")
+        items.grab_focus()
+
+
+func _on_items_pressed() -> void:
+        add_sibling(Inventory.instantiate())
+
+        Change_tab.emit("Inventory")
+        self.visible = false
+
+
+func _on_save_pressed() -> void:
+        add_sibling(SaveMenu.instantiate())
+
+        Change_tab.emit("Save_Datas")
+        self.visible = false
+
+
+func _on_game_end_pressed() -> void:
+        add_sibling.call_deferred(GameEnd.instantiate())
+        Change_tab.emit("Quit_confirmation")
+        self.visible = false
