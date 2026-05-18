@@ -1,0 +1,32 @@
+extends Node2D
+
+@export var Messages : Array[String]
+@export_file("*.tscn") var Sprite : String = ""
+@onready var msg_img: Sprite2D = $MsgImg
+
+
+var Game
+var Player_in_range: bool = false
+
+
+func _ready() -> void:
+        Game = get_parent().get_parent().get_parent()
+        if Sprite != "":
+                msg_img.queue_free()
+                add_child(load(Sprite).instantiate())
+
+
+
+func _process(delta: float) -> void:
+        if Player_in_range and Input.is_action_just_pressed("ui_accept"):
+                Game.DisplayTextBox(Messages)
+
+
+func _on_area_2d_area_entered(area: Area2D) -> void:
+        if area.name == "Interaction":
+                Player_in_range = true
+
+
+func _on_area_2d_area_exited(area: Area2D) -> void:
+        if area.name == "Interaction":
+                Player_in_range = false
