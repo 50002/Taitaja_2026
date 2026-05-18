@@ -1,0 +1,67 @@
+extends CanvasLayer
+
+
+
+@onready var background_shade: ColorRect = $"Background Shade"
+@onready var menu: Control = $"Background Shade/Menu"
+@onready var shop: Control = $"Background Shade/Shop"
+
+
+
+var game : Node2D
+var player
+
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+
+        player = get_parent().get_parent()
+        game = player.get_parent()
+
+        background_shade.menu_closed.connect(CloseMenu)
+
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+        if Input.is_action_just_pressed("Menu") and game.state == GameManager.Game_State.Active:
+                print("State: ", str(game.state))
+                print(GameManager.Game_State.Active)
+                OpenMenu.call_deferred()
+
+func BacktoMenu(child: Control):
+        child.queue_free.call_deferred()
+        menu.visible = true
+        menu.opened()
+
+func Shop(list: Dictionary):
+        game.state = GameManager.Game_State.Menu
+        print(game.state)
+        get_tree().paused = true
+        shop.queue_redraw()
+        shop.visible = true
+        menu.visible = false
+        background_shade.visible = true
+        shop.Open(list)
+
+func close_Shop() -> void:
+        game.state = GameManager.Game_State.Active
+        get_tree().paused = false
+        shop.visible = false
+        menu.visible = true
+        background_shade.visible = false
+
+func OpenMenu():
+        get_tree().paused = true
+        background_shade.visible = true
+        game.state = GameManager.Game_State.Menu
+        menu.opened()
+        player.get_child(0).PlayerStateChange.call_deferred()
+
+func CloseMenu():
+        get_tree().paused = false
+        background_shade.visible = false
+        if game.state != GameManager.Game_State.Battle:
+                game.state = GameManager.Game_State.Active
+        player.get_child(0).PlayerStateChange.call_deferred()
