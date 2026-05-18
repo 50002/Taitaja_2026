@@ -1,0 +1,7 @@
+extends CharacterBody2D
+class_name NPC
+
+@export var NAME : String
+@export var SHOP : bool = false
+@export var SPRITE : SpriteFrames
+@export var EXPRESION : Sprite2D
